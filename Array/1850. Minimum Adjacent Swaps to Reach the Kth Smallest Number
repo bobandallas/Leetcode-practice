@@ -1,0 +1,79 @@
+class Solution {
+    public int getMinSwaps(String num, int k) {
+        char[] subString = num.toCharArray();
+        char[] orignal = num.toCharArray();
+        for(int i = 0; i < k; i++){
+            
+            nextString(subString);
+            // System.out.println(new String(subString));
+        }
+        int count = 0;
+        System.out.println(new String(subString));
+        int n = num.length();
+        
+        //inversion pair
+        // ex. we got the original string: b c a d, we want to convert it to d c a b
+        // so I can mark the d c a b
+                             0 1 2 3 
+                             
+        // the original is   b c a d 
+                             3 1 2 0 
+        // using the index array to sort, to eliminate the inversion pair.
+        for(int i = 0; i < n; i++){
+            if(subString[i] == orignal[i]){
+                continue;
+            }else{
+                for(int j = i + 1; j < n; j++){
+                    if(subString[j] == orignal[i]){
+                        // System.out.println("before swap:" + new String(subString));
+                        // System.out.println("swap:" + i +"," + j);
+                        for(int p = j - 1; p >= i; p--){
+                            count++;
+                            swap(subString, p, p + 1);
+                        }
+                        // System.out.println("swap:" + new String(subString));
+                        break;
+                    }
+                }
+            }
+        }
+        // System.out.println(new String(subString));
+        return count;
+    }
+    
+    // leetcode 31 find next permutation, k times next permutation is the result
+    // the next smallest permutation larger than original 
+    public void nextString(char[] num){
+        int n = num.length;
+        
+        int i = n - 2;
+        
+        while(i >= 0 && num[i] >= num[i + 1]){
+            i--;
+        }
+        if(i >= 0){
+            int j = n - 1;
+            while(num[j] <= num[i]){
+                j--;
+            }
+            swap(num, i, j);
+        }
+        reverse(num, i + 1);
+        
+    }
+    public void swap(char[] nums, int i, int j) {
+        char temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    public void reverse(char[] nums, int start) {
+        int left = start, right = nums.length - 1;
+        while (left < right) {
+            swap(nums, left, right);
+            left++;
+            right--;
+        }
+    }
+}
+
